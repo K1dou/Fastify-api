@@ -1,4 +1,5 @@
 import fastify from 'fastify';
+import { postsRoutes } from './routes/posts.js';
 
 const app = fastify({
   logger: {
@@ -7,6 +8,8 @@ const app = fastify({
     },
   },
 });
+
+app.register(postsRoutes);
 
 app.listen({
   host: '0.0.0.0',
