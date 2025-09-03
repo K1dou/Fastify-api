@@ -47,4 +47,20 @@ export async function postsRoutes(app) {
 
     return reply.status(201).send(post);
   });
+
+  app.patch('/posts/:id/like', { onRequest: [isAuth] }, (request, reply) => {
+    const { id } = request.params;
+    const { username } = request.body;
+    const postIndex = posts.findIndex((post) => post.id === parseInt(id));
+    if (postIndex === -1) {
+      return reply.status(404).send({ message: 'Post not found' });
+    }
+    const likeIndex = posts[postIndex].likes.indexOf(username);
+    if (likeIndex === -1) {
+      posts[postIndex].likes.push(username);
+    } else {
+      posts[postIndex].likes.splice(likeIndex, 1);
+    }
+    return reply.status(200).send(posts[postIndex]);
+  });
 }
