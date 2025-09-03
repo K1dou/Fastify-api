@@ -7,6 +7,11 @@ const posts = [
 ];
 
 export async function postsRoutes(app) {
+  app.addHook('onSend', (req, reply, payload, done) => {
+    console.log('Interceptando resposta de /posts...');
+    done(null, payload);
+  });
+
   app.get('/posts', { onRequest: [isAuth] }, (request, reply) => {
     return reply.status(200).send(posts);
   });
